@@ -1,32 +1,56 @@
 #!/bin/bash
 
+# Este script instala y configura Tomcat 10 en Ubuntu 20.04
+# Se debe ejecutar con permisos de superusuario
+
+# Salir en caso de error
+set -e
+
 #1. Instalacion tomcat
 # Actualizar el sistema
-apt update -y
-apt upgrade -y
+echo "Actualizando sistema..."
+sudo apt update -y
+sudo apt upgrade -y
 
-# Instalar Java JDK
-apt install openjdk-17-jdk
-apt install openjdk-17-jre
+# Instalar Java 17 JDK
+sudo apt install openjdk-17-jdk
+sudo apt install openjdk-17-jre
+java -version
 
 # Creamos un usuario y grupo tomcat si no existen
+echo "Creando usuario tomcat..."
 if id "tomcat" >/dev/null 2>&1; then
         echo "Usuario tomcat ya existe"
 else
         useradd -m -d /opt/tomcat -U -s /bin/false tomcat
 fi
 
+echo "Creando grupo grupoTomcat..."
+if getent group "grupoTomcat" >/dev/null 2>&1; then
+    echo "Grupo grupoTomcat ya existe"
+else
+    groupadd grupoTomcat
+fi
+
+# Asociando el usuario tomcat al grupo grupoTomcat
+usermod -aG grupoTomcat tomcat
+
+echo "Usuario y grupo grupoTomcat creados y asociados correctamente."
+
 # Descargamos Apache Tomcat
-wget https://dlcdn.apache.org/tomcat/tomcat-10/v10.1.18/bin/apache-tomcat-10.1.18.tar.gz
+echo "Descargando Tomcat 10..."
+wget https://dlcdn.apache.org/tomcat/tomcat-10/v10.1.18/bin/apache-tomcat-10.1.18.tar.gz -P /tmp
 
 # Creamos un directorio de instalación
+echo "Creando directorio de instalación..."
 mkdir -p /opt/tomcat
 
 # Descomprimimos Apache Tomcat en el directorio de instalación
+echo "Descomprimiendo Tomcat..."
 tar xzvf apache-tomcat-10.1.18.tar.gz -C /opt/tomcat --strip-components=1
 
 # Cambiamos el propietario y los permisos del directorio de instalación
-chown -R tomcat:tomcat /opt/tomcat
+chown -R tomcat:grupoTomcat /opt/tomcat
 chmod -R u+x /opt/tomcat/bin
 
 #2. Configuramos los usuarios administradores
