@@ -11,3 +11,5 @@ aws cloudformation deploy \
   --stack-name $stack_name \
   --template-file $template_file \
   --capabilities CAPABILITY_IAM
+
+echo "La pila $stack_name ha sido desplegada correctamente."
