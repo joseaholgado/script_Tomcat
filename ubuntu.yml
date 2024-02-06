@@ -255,7 +255,7 @@ Resources:
           cd /home/tmp
 
           # Clonar repositorio
-          git clone https://github.com/Alexiiius/Stack-AWS-Tomcat.git
+          git clone https://github.com/joseaholgado/script_Tomcat
 
           # Compilamos el proyecto
           cd apacheTomcat/app
