@@ -248,7 +248,7 @@ Resources:
           
           #-------------------------------Instalar git--------------------------------------------
           # # Instalar git
-          apt-install git -y
+          apt install git -y
 
           # Crear directorio temporal
           mkdir /home/tmp
@@ -262,7 +262,7 @@ Resources:
           chmod +x gradlew
           ./gradlew war
 
-          # 8. Copiamos el war a la carpeta de tomcat
+          #  Copiamos el war a la carpeta de tomcat
           mv build/libs/*.war /opt/tomcat/webapps/hola.war
 
           echo "Instalación completada, acceder a http://server_domain_or_IP:8080"
