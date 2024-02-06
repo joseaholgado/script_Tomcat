@@ -32,7 +32,7 @@ Resources:
     Type: AWS::EC2::Instance
     CreationPolicy:
       ResourceSignal:
-        Timeout: PT3M
+        Timeout: PT5M
         Count: '1'
     Metadata:
       AWS::CloudFormation::Init:
@@ -167,8 +167,6 @@ Resources:
               useradd -m -s /bin/false -g tomcat -d /opt/tomcat tomcat
           fi
 
-
-
           # Configurar permisos
           echo "Configurando permisos..."
           cd /opt/tomcat
@@ -258,7 +256,7 @@ Resources:
           git clone https://github.com/joseaholgado/script_Tomcat
 
           # Compilamos el proyecto
-          cd apacheTomcat/app
+          cd script_Tomcat/app
           chmod +x gradlew
           ./gradlew war
 
@@ -271,6 +269,8 @@ Resources:
           #----------------------------ULTIMA INSTRUCCION-----------------------------------------
           # Esta tiene que serla ultima instrucción
           /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource EC2Instance --region ${AWS::Region}
+          echo "Reiniciando la instancia..."
+          shutdown -r now
       Tags:
         - Key: Name
           Value: !Ref AWS::StackName
@@ -293,8 +293,8 @@ Resources:
         - Key: Name
           Value: !Ref AWS::StackName
 Outputs:
-  PublicIP:
+  IPInstancia:
     Description: The Public IP of the EC2 instance
     Value: !GetAtt EC2Instance.PublicIp
     Export:
-      Name: PublicIP
+      Name: IPInstancia
