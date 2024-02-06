@@ -32,3 +32,14 @@ Resources:
             VolumeType: "gp2"  
             DeleteOnTermination: "false"
             VolumeSize: 20
+
+  parametervalue:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: /dev/sdm
+      Type: String
+      Value: /dev/sdm
+      Description: "DeviceName"
+      Tags:
+        - Key: Name
+          Value: /dev/sdm
